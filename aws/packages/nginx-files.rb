@@ -1,6 +1,14 @@
 SERVERNAME = $servername
 DOMAINNAME = $domainname
 MYTIME     = $myt
+tmpnx    = "/tmp/nginx.conf"
+bknx     = "/tmp/nginx.conf." + $myt
+filenx   = "/etc/nginx/nginx.conf"
+
+tmpvirt	 = "/tmp/nginx.virtual.conf"
+bkvirt   = "/tmp/nginx.virtual.conf." + $myt
+filevirt = "/etc/nginx/sites-available/#{$servername}"
+
 
 package :nxconf do	
 	transfer "#{$filesdir}/nginx.conf.template", '/tmp/nginx.conf.template', :render => true 
@@ -14,25 +22,20 @@ end
 package :copynxconf do
 
 	requires :nxconf
-	
-	bknx = "/tmp/nginx.conf." + $myt
-        filenx = "/etc/nginx/nginx.conf"
-
-	# Overwrite /etc/nginx/nginx.conf with custom /tmp/nginx.conf.tmp 
-	runner "if [ -f /tmp/nginx.conf.tmp ]; then cp /tmp/nginx.conf.template /etc/nginx/nginx.conf" do
-	   # backup existing file
+ 
+	runner 'if [ "X(md5sum #{tmpnx} |cut -d\" \" -f 1)" != "X(md5sum #{filenx} |cut -d\" \" -f 1)" ]; then cp "#{tmpnx}" "#{filenx}; fi' do     
 	   pre :install, "if [ -f #{filenx} ]; then cp #{filenx} #{bknx}; fi"
 	end
-
-	# Verification: Figure out a way to compare two remote files
 end
 
 package :copynxvirt do
 
 	requires :nxvirt
 
-	bkvirt = "/tmp/nginx.virtual.conf." + $myt
-	filevirt = "/etc/nginx/sites-available/#{$servername}"
+	runner 'if [ "X(md5sum #{tmpvirt} |cut -d\" \" -f 1)" != "X(md5sum #{filevirt} |cut -d\" \" -f 1)" ]; then cp "#{tmpvirt}" "#{filevirt}"; fi' do     
+	   pre :install, "if [ -f #{filevirt} ]; then cp #{filevirt} #{bkvirt}; fi"
+	end
+
 
 	runner "cp /tmp/nginx.virtual.template #{filevirt}" do
 	# backup existing file
