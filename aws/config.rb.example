@@ -1,0 +1,3 @@
+$servername = "staging"
+$domainname = "example.com"
+
