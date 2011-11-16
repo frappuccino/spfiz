@@ -1,3 +1,0 @@
-servername = "staging"
-domainname = "example.com"
-filesdir = "#{thisdir}/files"
