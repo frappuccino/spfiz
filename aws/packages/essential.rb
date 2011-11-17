@@ -39,3 +39,10 @@ package :linkrvm do
 		has_symlink '/usr/local/rvm', '/usr/local/share/ruby-rvm'
 	end
 end
+
+package :imagemagic do
+	apt 'imagemagick' 
+	verify do
+		has_apt 'imagemagic'
+	end
+end

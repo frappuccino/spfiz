@@ -1,10 +1,3 @@
-
-# server {
-#      listen	80;
-#      server_name <%= SERVERNAME %>.<%= DOMAINNAME %>;
-#      rewrite	^(.*)	https://<%= SERVERNAME %>.<%= DOMAINNAME %>$1 permanent;
-# }
-
 server {
     listen      80;
     listen      443 ssl;
@@ -35,7 +28,7 @@ server {
     keepalive_timeout 5;
 
     # path for static files
-    root /var/www/<%= DOMAINNAME %>/current;
+    root /var/www/<%= DOMAINNAME %>/current/public;
 
     if (-f $document_root/system/maintenance.html) {
       return 503;
