@@ -1,10 +1,17 @@
 # install.rb
 #
 # TO USE: 
-#   Install Ruby and the Sprinkle gem.
-#   Copy config.rb.example to pvt/config.rb and adjust as necessary.
-#   Workaround for matches_local md5 problem: 
-#       - link local md5 to md5sum; (i.e. cd /usr/bin; ln -s md5sum md5) 
+#   Install Ruby / Sprinkle.
+#   PRE SPRINKLE : 
+#       Copy config.rb.example to pvt/config.rb and adjust as necessary.
+#   POST SPRINKLE: 
+#      - Create a password file
+#          # htpasswd -c  /etc/nginx/htpasswd.< servername >
+#        or comment out the auth_basic directives from nginx
+#      - Copy certificate files to 
+#             /etc/nginx/ssl/servername.domainname.{key|crt} 
+#      - Set the timezone
+#          # dpkg-reconfigure tzdata 
 
 # TO RUN:
 # sprinkle -v -c -s install.rb
