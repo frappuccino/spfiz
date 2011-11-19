@@ -75,7 +75,7 @@ http {
     # single worker for timing out).
 
     # for UNIX domain socket setups:
-    server unix:/tmp/<%= SERVERNAME %>.sock fail_timeout=0;
+    server unix:/tmp/<%= SOCKETNAME %>.sock fail_timeout=0;
 
     # for TCP setups, point these to your backend servers
     # server 192.168.0.7:8080 fail_timeout=0;

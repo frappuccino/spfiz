@@ -3,15 +3,18 @@
 # TO USE: 
 #   Install Ruby / Sprinkle.
 #   PRE SPRINKLE : 
-#       Copy config.rb.example to pvt/config.rb and adjust as necessary.
+#       (remote) Spin up and EC2 instance; set the timezone; set login method (key / password)
+#       (local) Copy config.rb.example to pvt/config.rb and adjust as necessary.
+#
 #   POST SPRINKLE: 
 #      - Create a password file
 #          # htpasswd -c  /etc/nginx/htpasswd.< servername >
 #        or comment out the auth_basic directives from nginx
 #      - Copy certificate files to 
 #             /etc/nginx/ssl/servername.domainname.{key|crt} 
-#      - Set the timezone
-#          # dpkg-reconfigure tzdata 
+
+# TO TEST:
+# sprinkle -t -v -c -s install.rb
 
 # TO RUN:
 # sprinkle -v -c -s install.rb
@@ -63,15 +66,15 @@ end
 policy :myapp, :roles => :app do
   requires :setname
   requires :copysetname
-#  requires :nginx
-#  requires :ruby193p0
+  requires :nginx
+  requires :ruby193p0
 #  requires :bundler
-#  requires :subversion
-#  requires :dbstuff
-#  requires :webutilities
-#  requires :linkrvm
-   requires :nxconf
-# requires :copynxconf
-   requires :nxvirt
-#   requires :copynxvirt
+  requires :subversion
+  requires :dbstuff
+  requires :webutilities
+  requires :linkrvm
+  requires :nxconf
+  requires :copynxconf
+  requires :nxvirt
+  requires :copynxvirt
 end

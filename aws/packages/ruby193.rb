@@ -29,3 +29,4 @@ package :bundler do
     has_version_in_grep 'rvm gem list', "bundler"
   end
 end
+

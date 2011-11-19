@@ -1,7 +1,8 @@
+SERVERNAME = $servername
+SERVERDOMAIN = $serverdomain
+MYTIME     = $myt
+
 package :setname do
-  	SERVERNAME = $servername
-	DOMAINNAME = $domainname
-        MYTIME     = $myt
 	transfer "#{$filesdir}/rc.local.template", "/tmp/rc.local.template", :render => true 
 end
 

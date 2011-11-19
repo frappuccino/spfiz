@@ -1,3 +1,13 @@
-$servername = "staging"
-$domainname = "example.com"
+# Servername and Serverdomaim are what you call the actual server
+$servername = "instance1"
+$serverdomain = "company.com"
+
+# Sitename and Sitedomain are what you call the actual website
+$sitename   = "www"
+# $sitename = ""  # for an empty sitename
+$sitedomain = "domain.com"
+
+# Create a special nginx/unicorn socket variable name (vs using $sitename) 
+#   in the event sitename is empty
+$socket = "instance1"
 

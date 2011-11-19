@@ -1,8 +1,8 @@
 server {
     listen      80;
     listen      443 ssl;
-    ssl_certificate /etc/nginx/ssl/<%= SERVERNAME %>.fizbeaux.crt;
-    ssl_certificate_key	/etc/nginx/ssl/<%= SERVERNAME %>.fizbeaux.key;
+    ssl_certificate /etc/nginx/ssl/<%= SITENAME %>.<%= SITEDOMAIN %>.crt;
+    ssl_certificate_key	/etc/nginx/ssl/<%= SITENAME %>.<%= SITEDOMAIN %>.key;
 
     ssl_session_timeout  5m;
 
@@ -10,7 +10,7 @@ server {
     ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
     ssl_prefer_server_ciphers   on;
 
-    server_name <%= SERVERNAME %>.<%= DOMAINNAME %>;
+    server_name <%= SITENAME %>.<%= SITEDOMAIN %>;
 
     # If you have IPv6, you'll likely want to have two separate listeners.
     # One on IPv4 only (the default), and another on IPv6 only instead
@@ -28,7 +28,7 @@ server {
     keepalive_timeout 5;
 
     # path for static files
-    root /var/www/<%= DOMAINNAME %>/current/public;
+    root /var/www/<%= SITEDOMAIN %>/current/public;
 
     if (-f $document_root/system/maintenance.html) {
       return 503;
@@ -52,7 +52,7 @@ server {
     location @app {
 
       auth_basic	"Restricted";
-      auth_basic_user_file htpasswd.<%= SERVERNAME %>;
+      auth_basic_user_file htpasswd.<%= SITENAME %>;
 
       # an HTTP header important enough to have its own Wikipedia entry:
       #   http://en.wikipedia.org/wiki/X-Forwarded-For
@@ -88,14 +88,14 @@ server {
     # Rails error pages
     error_page 500 502 503 504 /500.html;
     location = /500.html {
-      root /var/www/<%= DOMAINNAME %>/current/public;
+      root /var/www/<%= SITEDOMAIN %>/current/public;
     }
 }
 
 server {
-  server_name assets1.<%= DOMAINNAME %>;
+  server_name assets1.<%= SITEDOMAIN %>;
 
-  root /var/www/<%= DOMAINNAME %>/shared;
+  root /var/www/<%= SITEDOMAIN %>/shared;
 
 #   error_log /var/log/nginx/error-assets.log notice;
 #   access_log /var/log/nginx/access-assets.log main;

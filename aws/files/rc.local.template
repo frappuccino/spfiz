@@ -17,10 +17,10 @@ echo "<%= SERVERNAME %>" > /etc/hostname
 aws_local_ipv4=$(wget -q -O- http://169.254.169.254/latest/meta-data/local-ipv4)
 aws_public_ipv4=$(wget -q -O- http://169.254.169.254/latest/meta-data/public-ipv4)
 sed -i "s/^.*pvt<%= SERVERNAME %>.*$/$aws_local_ipv4 pvt<%= SERVERNAME %>/" /etc/hosts
-sed -i "s/^.*<%= SERVERNAME %>.<%= DOMAINNAME %>.*$/$aws_public_ipv4 <%= SERVERNAME %>.<%= DOMAINNAME %>/" /etc/hosts
+sed -i "s/^.*<%= SERVERNAME %>.<%= SERVERDOMAIN %>.*$/$aws_public_ipv4 <%= SERVERNAME %>.<%= SERVERDOMAIN %>/" /etc/hosts
 
 # Ensure mail goes out with the public name
-echo "<%= SERVERNAME %>.<%= DOMAINNAME %>" > /etc/mailname
+echo "<%= SERVERNAME %>.<%= SERVERDOMAIN %>" > /etc/mailname
 chmod 644 /etc/mailname
 # service postfix reload
 

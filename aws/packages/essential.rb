@@ -30,16 +30,6 @@ package :webutilities do
 	end
 end
 
-package :linkrvm do
-	# need to add a symbolic link to old-style rvm-shell calls
-
-	runner 'ln -s /usr/local/rvm /usr/share/ruby-rvm'
-
-	verify do
-		has_symlink '/usr/local/rvm', '/usr/local/share/ruby-rvm'
-	end
-end
-
 package :imagemagic do
 	apt 'imagemagick' 
 	verify do
