@@ -9,8 +9,8 @@ TO USE:
    (remote) Login to new instance:    # ssh -i <keypair> ubuntu@<elastic-ip or hostname> 
    (remote) Set timezone              # dpkg-reconfigure tzdata
    (remote) root logins?	      # sudo passwd root
-   (remote) PasswordAuthentication?   # vi /etc/ssh/sshd_config 
-   (remote) Restart ssh               # service ssh restart
+   (remote) PasswordAuthentication?   # sudo vi /etc/ssh/sshd_config 
+   (remote) Restart ssh               # sudo service ssh restart
    (local) Copy config.rb.example to pvt/config.rb and adjust as necessary
    (local) # sprinkle -t -v -c -s install.rb
    (local) # sprinkle    -v -c -s install.rb 
