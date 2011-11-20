@@ -1,8 +1,15 @@
+
 server {
-    listen      80;
+    listen	80;
+    server_name <%= AKA %>;
+    rewrite	^(.*)	https://<%= IDENTITY %>$1 permanent;
+}
+
+server {
+#    listen      80;
     listen      443 ssl;
-    ssl_certificate /etc/nginx/ssl/<%= SITENAME %>.<%= SITEDOMAIN %>.crt;
-    ssl_certificate_key	/etc/nginx/ssl/<%= SITENAME %>.<%= SITEDOMAIN %>.key;
+    ssl_certificate /etc/nginx/ssl/<%= SITEDOMAIN %>.crt;
+    ssl_certificate_key	/etc/nginx/ssl/<%= SITEDOMAIN %>.key;
 
     ssl_session_timeout  5m;
 
@@ -10,7 +17,7 @@ server {
     ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
     ssl_prefer_server_ciphers   on;
 
-    server_name <%= SITENAME %>.<%= SITEDOMAIN %>;
+    server_name <%= AKA %>;
 
     # If you have IPv6, you'll likely want to have two separate listeners.
     # One on IPv4 only (the default), and another on IPv6 only instead
@@ -30,15 +37,22 @@ server {
     # path for static files
     root /var/www/<%= SITEDOMAIN %>/current/public;
 
+    set $maintenance 0;
     if (-f $document_root/system/maintenance.html) {
-      return 503;
-     }
-
-    error_page 503 @maintenance;
-    location @maintenance {
-       rewrite  ^(.*)$  /system/maintenance.html last;
-       break;
+      set $maintenance 1;
     }
+
+    if ($request_uri ~* (jpg|jpeg|gif|png|js|css)$) {
+       set $maintenance 0;
+    }
+
+    if ($maintenance) {
+       return 503;
+    }
+
+    # location ^~ /public/ {
+    #   allow all;
+    #}
 
     # Prefer to serve static files directly from nginx to avoid unnecessary
     # data copies from the application server.
@@ -52,7 +66,7 @@ server {
     location @app {
 
       auth_basic	"Restricted";
-      auth_basic_user_file htpasswd.<%= SITENAME %>;
+      auth_basic_user_file htpasswd.<%= SERVERNAME %>;
 
       # an HTTP header important enough to have its own Wikipedia entry:
       #   http://en.wikipedia.org/wiki/X-Forwarded-For
@@ -86,9 +100,19 @@ server {
     }
 
     # Rails error pages
-    error_page 500 502 503 504 /500.html;
+    error_page 500 502 504 /500.html;
     location = /500.html {
       root /var/www/<%= SITEDOMAIN %>/current/public;
+    }
+
+    error_page 503 @maintenance;
+    location @maintenance {
+       if (-f $request_filename) {
+         break;
+       }
+
+       rewrite ^(.*)$ /system/maintenance.html break;
+       break;
     }
 }
 

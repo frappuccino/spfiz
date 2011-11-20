@@ -1,8 +1,11 @@
-SERVERNAME   = $servername
-SERVERDOMAIN = $serverdomain
-SITENAME     = $sitename
-SITEDOMAIN   = $sitedomain
-SOCKETNAME   = $socketname
+SERVERNAME   = $servername   # see pvt/config.rb
+SERVERDOMAIN = $serverdomain # see pvt/config.rb
+SITENAME     = $sitename     # see pvt/config.rb
+SITEDOMAIN   = $sitedomain   # see pvt/config.rb
+IDENTITY     = $identity     # see pvt/config.rb
+SOCKETNAME   = $socketname   # see pvt/config.rb
+AKA	     = #{$identity}  # nginx's site_name can be completely defined by identity
+# AKA        = "#{$idenity} www.#{$identity}"  # nginx's site_name needs "www" when you've set sitename="" 
 MYTIME     = $myt
 
 # /etc/nginx.conf
@@ -10,10 +13,10 @@ tmpnx    = "/tmp/nginx.conf.template"
 bknx     = "/tmp/nginx.conf." + $myt
 filenx   = "/etc/nginx/nginx.conf"
 
-# /etc/nginx/sites-available/<sitename>.<sitedomain>
+# /etc/nginx/sites-available/<identity>
 tmpvirt	 = "/tmp/nginx.virtual.conf.template"
 bkvirt   = "/tmp/nginx.virtual.conf." + $myt
-filevirt = "/etc/nginx/sites-available/#{$sitename}.#{$sitedomain}"
+filevirt = "/etc/nginx/sites-available/#{$identity}"
 
 
 package :nxconf do	

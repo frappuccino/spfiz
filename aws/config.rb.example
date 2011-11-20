@@ -1,11 +1,13 @@
 # Servername and Serverdomaim are what you call the actual server
-$servername = "instance1"
+$servername = "instance1" 
 $serverdomain = "company.com"
 
 # Sitename and Sitedomain are what you call the actual website
-$sitename   = "www"
-# $sitename = ""  # for an empty sitename
+$sitename   = ""
+# $sitename   = "www"
 $sitedomain = "domain.com"
+
+$identity = $sitename.empty? ? "#{$sitedomain}" : "#{$sitename}.#{$sitedomain}"
 
 # Create a special nginx/unicorn socket variable name (vs using $sitename) 
 #   in the event sitename is empty
