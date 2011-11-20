@@ -38,7 +38,6 @@ package :copynxconf do
 package :copynxvirt do
 	requires :nxvirt 
 	runner "if [ \"X\(md5sum #{tmpvirt} | awk \'{print $1}\' \)\" != \"X\(md5sum #{filevirt} | awk \'{print $1}\' \)\" ]; then cp #{tmpvirt} #{filevirt}; fi" do
-	# runner "if [ \"X\(md5sum #{tmpvirt} |cut -d\" \" -f 1\)\" != \"X\(md5sum #{filevirt} |cut -d\" \" -f 1\)\" ]; then cp #{tmpvirt} #{filevirt}; fi" do
 	   pre :install, "if [ -f #{filevirt} ]; then cp #{filevirt} #{bkvirt}; fi"
 	end
 
