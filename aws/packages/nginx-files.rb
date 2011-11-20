@@ -4,7 +4,7 @@ SITENAME     = $sitename     # see pvt/config.rb
 SITEDOMAIN   = $sitedomain   # see pvt/config.rb
 IDENTITY     = $identity     # see pvt/config.rb
 SOCKETNAME   = $socketname   # see pvt/config.rb
-AKA	     = #{$identity}  # nginx's site_name can be completely defined by identity
+AKA	     = $identity     # nginx's site_name can be completely defined by identity?
 # AKA        = "#{$idenity} www.#{$identity}"  # nginx's site_name needs "www" when you've set sitename="" 
 MYTIME     = $myt
 
@@ -14,8 +14,8 @@ bknx     = "/tmp/nginx.conf." + $myt
 filenx   = "/etc/nginx/nginx.conf"
 
 # /etc/nginx/sites-available/<identity>
-tmpvirt	 = "/tmp/nginx.virtual.conf.template"
-bkvirt   = "/tmp/nginx.virtual.conf." + $myt
+tmpvirt	 = "/tmp/#{$identity}.template"
+bkvirt   = "/tmp/#{$identity}." + $myt
 filevirt = "/etc/nginx/sites-available/#{$identity}"
 
 
@@ -36,8 +36,9 @@ package :copynxconf do
  end
 
 package :copynxvirt do
-	requires :nxvirt
-	runner "if [ \"X\(md5sum #{tmpvirt} |cut -d\" \" -f 1\)\" != \"X\(md5sum #{filevirt} |cut -d\" \" -f 1\)\" ]; then cp #{tmpvirt} #{filevirt}; fi" do
+	requires :nxvirt 
+	runner "if [ \"X\(md5sum #{tmpvirt} | awk \'{print $1}\' \)\" != \"X\(md5sum #{filevirt} | awk \'{print $1}\' \)\" ]; then cp #{tmpvirt} #{filevirt}; fi" do
+	# runner "if [ \"X\(md5sum #{tmpvirt} |cut -d\" \" -f 1\)\" != \"X\(md5sum #{filevirt} |cut -d\" \" -f 1\)\" ]; then cp #{tmpvirt} #{filevirt}; fi" do
 	   pre :install, "if [ -f #{filevirt} ]; then cp #{filevirt} #{bkvirt}; fi"
 	end
 
