@@ -3,12 +3,14 @@ PURPOSE:
 
 TO USE: 
    (local)  Install Ruby / Sprinkle / Erubis / i18n 
-   (remote) Use AWS console to spin-up an alestic-based 11.10 EC2 instance
-   (remote) # dpkg-reconfigure tzdata
-   (remote) If configuring sprinkle to using root-level password-based logins: 
-               # sudo passwd root
-               Enable "PasswordAuthentication" in /etc/ssh/sshd_config's 
-               # service ssh restart
+   (remote) Use AWS console to spin-up an alestic-based 11.10 EC2 instance 
+   (remote) Use AWS console to associate an Elastic IP with the new instance (if required)
+   (remote) Update DNS (if required) 
+   (remote) Login to new instance:    # ssh -i <keypair> ubuntu@<elastic-ip or hostname> 
+   (remote) Set timezone              # dpkg-reconfigure tzdata
+   (remote) root logins?	      # sudo passwd root
+   (remote) PasswordAuthentication?   # vi /etc/ssh/sshd_config 
+   (remote) Restart ssh               # service ssh restart
    (local) Copy config.rb.example to pvt/config.rb and adjust as necessary
    (local) # sprinkle -t -v -c -s install.rb
    (local) # sprinkle    -v -c -s install.rb 
