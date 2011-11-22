@@ -14,36 +14,51 @@ bknx     = "/tmp/nginx.conf." + $myt
 filenx   = "/etc/nginx/nginx.conf"
 
 # /etc/nginx/sites-available/<identity>
-tmpvirt	 = "/tmp/#{$identity}.template"
-bkvirt   = "/tmp/#{$identity}." + $myt
-filevirt = "/etc/nginx/sites-available/#{$identity}"
+tmpvirt	   = "/tmp/#{$identity}.template"
+bkvirt     = "/tmp/#{$identity}." + $myt
+filevirt   = "/etc/nginx/sites-available/#{$identity}"
+enablevirt = "/etc/nginx/sites-enabled/#{$identity}"
 
 
 package :nxconf do	
-	transfer "#{$filesdir}/nginx.conf.template", "#{tmpnx}", :render => true 
+  transfer "#{$filesdir}/nginx.conf.template", "#{tmpnx}", :render => true 
 end
 
 package :nxvirt do
-        transfer "#{$filesdir}/nginx.virtual.template", "#{tmpvirt}", :render => true
+  transfer "#{$filesdir}/nginx.virtual.template", "#{tmpvirt}", :render => true
 end
 
 package :copynxconf do
-       requires :nxconf
-       runner 'if [ "X(md5sum /tmp/nginx.conf.template |cut -d\" \" -f 1)" != "X(md5sum /etc/nginx/nginx.conf |cut -d\" \" -f 1)" ]; then cp /tmp/nginx.conf.template /etc/nginx/nginx.conf; fi' do     
-	   pre :install, "if [ -f #{filenx} ]; then cp #{filenx} #{bknx}; fi"
-	end
-
- end
-
-package :copynxvirt do
-	requires :nxvirt 
-	runner "if [ \"X\(md5sum #{tmpvirt} | awk \'{print $1}\' \)\" != \"X\(md5sum #{filevirt} | awk \'{print $1}\' \)\" ]; then cp #{tmpvirt} #{filevirt}; fi" do
-	   pre :install, "if [ -f #{filevirt} ]; then cp #{filevirt} #{bkvirt}; fi"
-	end
+  requires :nxconf
+  runner 'if [ "X(md5sum /tmp/nginx.conf.template |cut -d\" \" -f 1)" != "X(md5sum /etc/nginx/nginx.conf |cut -d\" \" -f 1)" ]; then cp /tmp/nginx.conf.template /etc/nginx/nginx.conf; fi' do     
+    pre :install, "if [ -f #{filenx} ]; then cp #{filenx} #{bknx}; fi"
+  end
 
 end
 
+package :copynxvirt do
+  requires :nxvirt 
+  runner "if [ \"X\(md5sum #{tmpvirt} | awk \'{print $1}\' \)\" != \"X\(md5sum #{filevirt} | awk \'{print $1}\' \)\" ]; then cp #{tmpvirt} #{filevirt}; fi" do
+    pre :install, "if [ -f #{filevirt} ]; then cp #{filevirt} #{bkvirt}; fi"
+  end
 
+end
+
+package :siteenable do
+  requires :copynxvirt
+  runner "ln -s #{filevirt} #{enablevirt}"
+  verify do
+    has_symlink "#{enablevirt}"
+  end
+end
+
+package :sslkeys do
+  runner 'if [ ! -d /etc/nginx/ssl ]; then mkdir /etc/nginx/ssl; fi'
+  runner "if [ -f /etc/nginx/ssl/#{$sitedomain}.crt ]; then cp /etc/nginx/ssl/#{$sitedomain}.crt /tmp/#{$sitedomain}.crt.#{$myt}; fi"
+  runner "if [ -f /etc/nginx/ssl/#{$sitedomain}.key ]; then cp /etc/nginx/ssl/#{$sitedomain}.key /tmp/#{$sitedomain}.key.#{$myt}; fi" 
+  transfer "#{$filesdir}/pvt/#{$sitedomain}.crt", "/etc/nginx/ssl/#{$sitedomain}.crt"
+  transfer "#{$filesdir}/pvt/#{$sitedomain}.key", "/etc/nginx/ssl/#{$sitedomain}.key"
+end
 
 # IF THE ABOVE RUNNER LINES FAIL, USE THIS METHOD
 # ---------------------------------------
@@ -52,20 +67,20 @@ end
 # verifiedcopy = "#{$filesdir}/verified.copy.bash.template"
 
 # package :copynxconf do
-	# TMPFILE = tmpnx
-	# REALFILE = filenx	
-        # BKFILE = bknx
-	# requires :nxconf
+  # TMPFILE = tmpnx
+  # REALFILE = filenx	
+  # BKFILE = bknx
+  # requires :nxconf
 
-	# transfer "#{verifiedcopy}", "/tmp/copy.nginx.conf.bash", :render => true
-	# runner   "/tmp/copy.nginx.conf.bash"
+  # transfer "#{verifiedcopy}", "/tmp/copy.nginx.conf.bash", :render => true
+  # runner   "/tmp/copy.nginx.conf.bash"
 # end
 
 # package :copynxvirt do
-	# TMPFILE = tmpvirt
-	# REALFILE = filevirt
-	# requires :nxvirt
+  # TMPFILE = tmpvirt
+  # REALFILE = filevirt
+  # requires :nxvirt
 
-	# transfer "#{verifiedcopy}", "/tmp/copy.nginx.#{sitename}.#{sitedomain}.bash", :render => true
-	# runner   "/tmp/copy.#{sitename}.#{sitedomain}.bash"
+  # transfer "#{verifiedcopy}", "/tmp/copy.nginx.#{sitename}.#{sitedomain}.bash", :render => true
+  # runner   "/tmp/copy.#{sitename}.#{sitedomain}.bash"
 # end

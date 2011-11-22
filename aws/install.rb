@@ -16,6 +16,7 @@ require "#{$thisdir}/packages/ruby193"
 require "#{$thisdir}/packages/setname"
 require "#{$thisdir}/packages/nginx-package"
 require "#{$thisdir}/packages/nginx-files"
+require "#{$thisdir}/packages/mysql-server.rb"
 
 deployment do
 
@@ -40,10 +41,14 @@ policy :myapp, :roles => :app do
 #  requires :bundler
   requires :subversion
   requires :dbstuff
+  requires :mysqlserver
   requires :webutilities
+  requires :imagemagic
   requires :linkrvm
   requires :nxconf
   requires :copynxconf
   requires :nxvirt
   requires :copynxvirt
+  requires :sslkeys
+  requires :siteenable
 end

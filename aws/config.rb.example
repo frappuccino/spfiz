@@ -11,5 +11,5 @@ $identity = $sitename.empty? ? "#{$sitedomain}" : "#{$sitename}.#{$sitedomain}"
 
 # Create a special nginx/unicorn socket variable name (vs using $sitename) 
 #   in the event sitename is empty
-$socket = "instance1"
+$socket = "domain.com"
 
