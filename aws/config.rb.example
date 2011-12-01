@@ -13,4 +13,8 @@ $identity = $sitename.empty? ? "#{$sitedomain}" : "#{$sitename}.#{$sitedomain}"
 #   in the event sitename is empty
 $socket = "domain.com"
 
-$theenv = "staging"
+# The Environment for UNICORN/RAILS
+$theenv = "staging" 
+
+# MONIT ALERTS
+$monitalert = "user@example.com"

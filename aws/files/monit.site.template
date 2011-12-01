@@ -1,0 +1,47 @@
+check process unicorn
+  with pidfile /var/www/<%= SITEDOMAIN %>/shared/pids/unicorn.pid
+  start program = "/etc/init.d/unicorn.<%= SITEDOMAIN %> start"
+  stop program = "/etc/init.d/unicorn.<%= SITEDOMAIN %> stop"
+  if mem is greater than 300.0 MB for 1 cycles then restart       # eating up memory?
+  if cpu is greater than 50% for 2 cycles then alert                  # send an email to admin
+  if cpu is greater than 80% for 3 cycles then restart                # hung process?
+
+  group unicorn
+
+
+check process unicorn_worker_5000
+  with pidfile /var/www/<%= SITEDOMAIN %>/shared/pids/unicorn.5000.pid
+  start program = "/bin/cat /dev/null"
+  stop program = "/etc/init.d/unicorn.<%= SITEDOMAIN %> kill_worker 5000"
+  if mem is greater than 300.0 MB for 1 cycles then restart
+  if cpu is greater than 80% for 3 cycles then restart
+
+  group unicorn_workers
+
+check process unicorn_worker_5001
+  with pidfile /var/www/<%= SITEDOMAIN %>/shared/pids/unicorn.5001.pid
+  start program = "/bin/cat /dev/null"
+  stop program = "/etc/init.d/unicorn.<%= SITEDOMAIN %> kill_worker 5001"
+  if mem is greater than 300.0 MB for 1 cycles then restart
+  if cpu is greater than 80% for 3 cycles then restart
+
+  group unicorn_workers
+
+check process unicorn_worker_5002
+  with pidfile /var/www/<%= SITEDOMAIN %>/shared/pids/unicorn.5002.pid
+  start program = "/bin/cat /dev/null"
+  stop program = "/etc/init.d/unicorn.<%= SITEDOMAIN %> kill_worker 5002"
+  if mem is greater than 300.0 MB for 1 cycles then restart
+  if cpu is greater than 80% for 3 cycles then restart
+
+  group unicorn_workers
+
+check process unicorn_worker_5003
+  with pidfile /var/www/<%= SITEDOMAIN %>/shared/pids/unicorn.5003.pid
+  start program = "/bin/cat /dev/null"
+  stop program = "/etc/init.d/unicorn.<%= SITEDOMAIN %> kill_worker 5003"
+  if mem is greater than 300.0 MB for 1 cycles then restart
+  if cpu is greater than 80% for 3 cycles then restart
+
+  group unicorn_workers
+

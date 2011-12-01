@@ -14,8 +14,8 @@ require "#{$thisdir}/packages/essential"
 require "#{$thisdir}/packages/rvm-package"
 require "#{$thisdir}/packages/ruby193"
 require "#{$thisdir}/packages/setname"
-require "#{$thisdir}/packages/nginx-package"
 require "#{$thisdir}/packages/nginx-files"
+require "#{$thisdir}/packages/unicorn-monit-files"
 require "#{$thisdir}/packages/mysql-server.rb"
 
 deployment do
@@ -51,4 +51,11 @@ policy :myapp, :roles => :app do
   requires :copynxvirt
   requires :sslkeys
   requires :siteenable
+  requires :postfix_local
+  requires :unicorn_startup
+  requires :copyunicorn_startup
+  requires :monit_global
+  requires :copymonit_global
+  requires :monit_site
+  requires :copymonit_site
 end

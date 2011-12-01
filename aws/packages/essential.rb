@@ -30,9 +30,37 @@ package :webutilities do
   end
 end
 
+package :postfix do
+  apt 'postfix'
+  verify do 
+    has_apt 'postfix'
+  end
+end
+
+package :postfix_local do
+  requires :postfix
+  replace_text 'inet_interfaces = all', 'inet_interfaces = 127.0.0.1', '/etc/postfix/main.cf'
+  verify { file_contains '/etc/postfix/main.cf', 'inet_interfaces = 127.0.0.1' }
+end
+
 package :imagemagic do
   apt 'imagemagick' 
   verify do
     has_apt 'imagemagick'
+  end
+end
+
+package :nginx do
+  apt 'nginx-full'	
+  verify do
+    has_apt 'nginx-full'
+  end
+end
+
+package :monit do
+  requires :postfix_local
+  apt 'monit'
+  verify do
+    has_apt 'monit'
   end
 end

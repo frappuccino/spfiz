@@ -21,6 +21,6 @@ sed -i "s/^.*<%= SERVERNAME %>.<%= SERVERDOMAIN %>.*$/$aws_public_ipv4 <%= SERVE
 # Ensure mail goes out with the public name
 echo "<%= SERVERNAME %>.<%= SERVERDOMAIN %>" > /etc/mailname
 chmod 644 /etc/mailname
-# service postfix reload
+service postfix reload
 
 exit 0
