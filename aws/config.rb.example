@@ -13,3 +13,4 @@ $identity = $sitename.empty? ? "#{$sitedomain}" : "#{$sitename}.#{$sitedomain}"
 #   in the event sitename is empty
 $socket = "domain.com"
 
+$theenv = "staging"
