@@ -28,7 +28,7 @@ package :nxvirt do
   transfer "#{$filesdir}/nginx.virtual.template", "#{tmpvirt}", :render => true
 end
 
-package :copynxconf do
+package :copy_nxconf do
   requires :nxconf
   runner 'if [ "X(md5sum /tmp/nginx.conf.template |cut -d\" \" -f 1)" != "X(md5sum /etc/nginx/nginx.conf |cut -d\" \" -f 1)" ]; then cp /tmp/nginx.conf.template /etc/nginx/nginx.conf; fi' do     
     pre :install, "if [ -f #{filenx} ]; then cp #{filenx} #{bknx}; fi"
@@ -36,7 +36,7 @@ package :copynxconf do
 
 end
 
-package :copynxvirt do
+package :copy_nxvirt do
   requires :nxvirt 
   runner "if [ \"X\(md5sum #{tmpvirt} | awk \'{print $1}\' \)\" != \"X\(md5sum #{filevirt} | awk \'{print $1}\' \)\" ]; then cp #{tmpvirt} #{filevirt}; fi" do
     pre :install, "if [ -f #{filevirt} ]; then cp #{filevirt} #{bkvirt}; fi"
@@ -44,20 +44,33 @@ package :copynxvirt do
 
 end
 
-package :siteenable do
-  requires :copynxvirt
+package :site_enable do
+  requires :copy_nxvirt
   runner "ln -s #{filevirt} #{enablevirt}"
   verify do
     has_symlink "#{enablevirt}"
   end
 end
 
-package :sslkeys do
-  runner 'if [ ! -d /etc/nginx/ssl ]; then mkdir /etc/nginx/ssl; fi'
-  runner "if [ -f /etc/nginx/ssl/#{$sitedomain}.crt ]; then cp /etc/nginx/ssl/#{$sitedomain}.crt /tmp/#{$sitedomain}.crt.#{$myt}; fi"
-  runner "if [ -f /etc/nginx/ssl/#{$sitedomain}.key ]; then cp /etc/nginx/ssl/#{$sitedomain}.key /tmp/#{$sitedomain}.key.#{$myt}; fi" 
-  transfer "#{$filesdir}/pvt/#{$sitedomain}.crt", "/etc/nginx/ssl/#{$sitedomain}.crt"
-  transfer "#{$filesdir}/pvt/#{$sitedomain}.key", "/etc/nginx/ssl/#{$sitedomain}.key"
+package :ssl_dir do
+  runner 'if [ ! -d /etc/nginx/ssl ]; then mkdir -p /etc/nginx/ssl; fi'
+  # Verify - Sprinkle does not currently verify directories  
+end
+
+package :copy_ssl_crt do
+  requires :ssl_dir
+  transfer "#{$filesdir}/pvt/#{$sitedomain}.crt", "/etc/nginx/ssl/#{$sitedomain}.crt" do
+    pre :install, "if [ ! -f /etc/nginx/ssl/#{$sitedomain}.crt ]; then cp /etc/nginx/ssl/#{$sitedomain}.crt /tmp/#{$sitedomain}.crt.#{$myt}; fi"
+  end
+  verify { file_contains "/etc/nginx/ssl/#{$sitedomain}.crt", "#{$snip_ssl_crt}" }
+end
+  
+package :copy_ssl_key do
+  requires :ssl_dir
+  transfer "#{$filesdir}/pvt/#{$sitedomain}.key", "/etc/nginx/ssl/#{$sitedomain}.key" do
+    pre :install, "if [ ! -f /etc/nginx/ssl/#{$sitedomain}.key ]; then cp /etc/nginx/ssl/#{$sitedomain}.key /tmp/#{$sitedomain}.key.#{$myt}; fi"
+  end
+  verify { file_contains "/etc/nginx/ssl/#{$sitedomain}.key", "#{$snip_ssl_key}" }
 end
 
 # IF THE ABOVE RUNNER LINES FAIL, USE THIS METHOD
@@ -66,7 +79,7 @@ end
 # Alternative method for copying files
 # verifiedcopy = "#{$filesdir}/verified.copy.bash.template"
 
-# package :copynxconf do
+# package :copy_nxconf do
   # TMPFILE = tmpnx
   # REALFILE = filenx	
   # BKFILE = bknx
@@ -76,7 +89,7 @@ end
   # runner   "/tmp/copy.nginx.conf.bash"
 # end
 
-# package :copynxvirt do
+# package :copy_nxvirt do
   # TMPFILE = tmpvirt
   # REALFILE = filevirt
   # requires :nxvirt

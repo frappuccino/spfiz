@@ -35,7 +35,7 @@ end
 
 policy :myapp, :roles => :app do
   requires :setname
-  requires :copysetname
+  requires :copy_setname
   requires :nginx
   requires :ruby193p0
 #  requires :bundler
@@ -45,17 +45,12 @@ policy :myapp, :roles => :app do
   requires :webutilities
   requires :imagemagic
   requires :linkrvm
-  requires :nxconf
-  requires :copynxconf
-  requires :nxvirt
-  requires :copynxvirt
-  requires :sslkeys
-  requires :siteenable
-  requires :postfix_local
-  requires :unicorn_startup
-  requires :copyunicorn_startup
-  requires :monit_global
-  requires :copymonit_global
-  requires :monit_site
-  requires :copymonit_site
+  requires :copy_nxconf
+  requires :copy_nxvirt
+  requires :copy_ssl_crt
+  requires :copy_ssl_key
+  requires :site_enable
+  requires :activate_unicorn_startup
+  requires :copy_monit_global
+  requires :copy_monit_site
 end
