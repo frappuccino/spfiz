@@ -64,3 +64,24 @@ package :monit do
     has_apt 'monit'
   end
 end
+
+package :curl do
+  apt 'curl'
+  verify do 
+    has_apt 'curl'
+  end
+end
+
+package :pkgconfig do
+  apt 'pkg-config'
+  verify do
+    has_apt 'pkg-config'
+  end
+end
+
+package :libpcre do
+  apt 'libpcre3-dev'
+  verify do 
+    has_apt 'libpcre3-dev'
+  end
+end

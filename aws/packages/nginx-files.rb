@@ -53,8 +53,8 @@ package :site_enable do
 end
 
 package :ssl_dir do
-  runner 'if [ ! -d /etc/nginx/ssl ]; then mkdir -p /etc/nginx/ssl; fi'
-  # Verify - Sprinkle does not currently verify directories  
+  runner 'mkdir -p /etc/nginx/ssl'
+  verify { has_directory '/etc/nginx/ssl' } 
 end
 
 package :copy_ssl_crt do

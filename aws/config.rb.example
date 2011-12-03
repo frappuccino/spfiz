@@ -10,7 +10,6 @@ $sitedomain = "domain.com"
 $identity = $sitename.empty? ? "#{$sitedomain}" : "#{$sitename}.#{$sitedomain}"
 
 # Create a special nginx/unicorn socket variable name (vs using $sitename) 
-#   in the event sitename is empty
 $socket = "domain.com"
 
 # The Environment for UNICORN/RAILS
@@ -21,3 +20,6 @@ $monitalert = "user@example.com"
 # SNIP SSL CERT AND KEY files for verification purposes
 $snip_ssl_crt = "snipofansslcrthere76hhjkwfuwafeajdfw"
 $snip_ssl_key = "snipofansslkeyherekloiwnfiowlafiew"
+
+# VARNISH
+$varish_gpg_fprint = "E98C 6BBB A1CB C5C3 EB2D  F21C 60E7 C096 C4DE FFEB"

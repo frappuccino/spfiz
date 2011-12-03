@@ -16,23 +16,24 @@ require "#{$thisdir}/packages/ruby193"
 require "#{$thisdir}/packages/setname"
 require "#{$thisdir}/packages/nginx-files"
 require "#{$thisdir}/packages/unicorn-monit-files"
-require "#{$thisdir}/packages/mysql-server.rb"
+require "#{$thisdir}/packages/mysql-server"
+# require "#{$thisdir}/packages/varnish-package"
+require "#{$thisdir}/packages/varnish-source"
 
 deployment do
-
   # mechanism for deployment
   delivery :capistrano do
     recipes 'deploy'
   end
-
-  # source based package installer defaults
-  #source do
-  #  prefix   '/usr/local'           # where all source packages will be configured to install
-  #  archives '/usr/local/sources'   # where all source packages will be downloaded to
-  #  builds   '/usr/local/build'     # where all source packages will be built
-  #end
+# 
+#   # source based package installer defaults
+  source do
+    prefix   '/usr/local'           # where all source packages will be configured to install
+    archives '/usr/local/sources'   # where all source packages will be downloaded to
+    builds   '/usr/local/build'     # where all source packages will be built
+  end
 end
-
+# 
 policy :myapp, :roles => :app do
   requires :setname
   requires :copy_setname
@@ -53,4 +54,7 @@ policy :myapp, :roles => :app do
   requires :activate_unicorn_startup
   requires :copy_monit_global
   requires :copy_monit_site
+  requires :varnish_install
+  requires :varnish_302_from_source
 end
+
