@@ -14,7 +14,7 @@ package :varnish_pkg do
   verify { file_contains '/etc/apt/sources.list', 'varnish-3.0' }
 end
 
-package :varnish_install do
+package :varnish_lts_install do
   requires :varnish_pkg
   apt 'varnish' do
     pre :install, 'apt-get update'

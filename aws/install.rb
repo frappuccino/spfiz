@@ -19,6 +19,7 @@ require "#{$thisdir}/packages/unicorn-monit-files"
 require "#{$thisdir}/packages/mysql-server"
 # require "#{$thisdir}/packages/varnish-package"
 require "#{$thisdir}/packages/varnish-source"
+require "#{$thisdir}/custom/customverify"
 
 deployment do
   # mechanism for deployment
@@ -35,26 +36,28 @@ deployment do
 end
 # 
 policy :myapp, :roles => :app do
-  requires :setname
-  requires :copy_setname
-  requires :nginx
-  requires :ruby193p0
-#  requires :bundler
-  requires :subversion
-  requires :dbstuff
-  requires :mysqlserver
-  requires :webutilities
-  requires :imagemagic
-  requires :linkrvm
-  requires :copy_nxconf
-  requires :copy_nxvirt
-  requires :copy_ssl_crt
-  requires :copy_ssl_key
-  requires :site_enable
-  requires :activate_unicorn_startup
-  requires :copy_monit_global
-  requires :copy_monit_site
-  requires :varnish_install
+#   requires :setname
+#   requires :copy_setname
+#   requires :nginx
+#   requires :ruby193p0
+# #  requires :bundler
+#   requires :subversion
+#   requires :dbstuff
+#   requires :mysqlserver
+#   requires :webutilities
+#   requires :imagemagic
+#   requires :linkrvm
+#   requires :copy_nxconf
+#   requires :copy_nxvirt
+#   requires :copy_ssl_crt
+#   requires :copy_ssl_key
+#   requires :site_enable
+#   requires :activate_unicorn_startup
+#   requires :copy_monit_global
+#   requires :copy_monit_site
+# #  requires :varnish_lts_install
   requires :varnish_302_from_source
+  requires :trash
+  requires :test1
 end
 
