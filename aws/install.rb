@@ -14,11 +14,12 @@ require "#{$thisdir}/custom/customverify"
 # BE SURE customverify is the first required file 
 
 require "#{$thisdir}/pvt/config.rb"
+require "#{$thisdir}/packages/setname"
 require "#{$thisdir}/packages/varnish-source"
 require "#{$thisdir}/packages/essential"
 require "#{$thisdir}/packages/rvm-package"
 require "#{$thisdir}/packages/ruby193"
-require "#{$thisdir}/packages/setname"
+require "#{$thisdir}/packages/ssl"
 require "#{$thisdir}/packages/nginx-files"
 require "#{$thisdir}/packages/unicorn-monit-files"
 require "#{$thisdir}/packages/mysql-server"
@@ -61,6 +62,5 @@ policy :myapp, :roles => :app do
 #   requires :copy_monit_site
 # #  requires :varnish_lts_install
   requires :varnish_302_from_source
-  requires :test1
 end
 

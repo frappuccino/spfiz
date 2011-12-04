@@ -46,10 +46,22 @@ end
 package :copy_monit_global do
   requires :monit
   requires :monit_global
-  runner "if [ \"X\(md5sum #{tmpmongbl} | awk \'{print $1}\' \)\" != \"X\(md5sum #{mongbl} | awk \'{print $1}\' \)\" ]; then cp #{tmpmongbl} #{mongbl}; fi" do
+  runner "cp #{tmpmongbl} #{mongbl}" do
     pre :install, "if [ -f #{mongbl} ]; then cp #{mongbl} #{bkmongbl}; fi" 
   end
+  verify do
+    has_file "#{tmpmongbl}"
+    match_remote_remote "#{tmpmongbl}", "#{mongbl}" # Custom verify extension
+  end
 end
+
+#  package :copy_monit_global do
+#    requires :monit
+#    requires :monit_global
+#    runner "if [ \"X\(md5sum #{tmpmongbl} | awk \'{print $1}\' \)\" != \"X\(md5sum #{mongbl} | awk \'{print $1}\' \)\" ]; then cp #{tmpmongbl} #{mongbl}; fi" do
+#      pre :install, "if [ -f #{mongbl} ]; then cp #{mongbl} #{bkmongbl}; fi" 
+#    end
+#  end
 
 # BUILD /etc/monit/conf.d/<sitedomain> from template, backup existing file prior to copy
 tmpmonsite = "/tmp/monit.site.template"
@@ -64,9 +76,20 @@ end
 package :copy_monit_site do
   requires :monit
   requires :monit_site
-  runner "if [ \"X\(md5sum #{tmpmonsite} | awk \'{print $1}\' \)\" != \"X\(md5sum #{monsite} | awk \'{print $1}\' \)\" ]; then cp #{tmpmonsite} #{monsite}; fi" do
+  runner "cp #{tmpmonsite} #{monsite}" do
     pre :install, "if [ -f #{monsite} ]; then cp #{monsite} #{bkmonsite}; fi" 
   end
+  verify do
+    has_file "#{tmpmonsite}"
+    match_remote_remote "#{tmpmonsite}, #{monsite}"
+  end 
 end
   
 
+# package :copy_monit_site do
+#   requires :monit
+#   requires :monit_site
+#   runner "if [ \"X\(md5sum #{tmpmonsite} | awk \'{print $1}\' \)\" != \"X\(md5sum #{monsite} | awk \'{print $1}\' \)\" ]; then cp #{tmpmonsite} #{monsite}; fi" do
+#     pre :install, "if [ -f #{monsite} ]; then cp #{monsite} #{bkmonsite}; fi" 
+#   end
+# end
