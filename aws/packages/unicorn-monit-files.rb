@@ -13,12 +13,19 @@ package :unicorn_startup do
 end
 
 package :copy_unicorn_startup do
-  requires :unicorn_startup
-  runner "if [ \"X\(md5sum #{tmpucorn} | awk \'{print $1}\' \)\" != \"X\(md5sum #{ucorn} | awk \'{print $1}\' \)\" ]; then cp #{tmpucorn} #{ucorn}; fi" do
-    pre :install, "if [ -f #{ucorn} ]; then cp #{ucorn} #{bkucorn}; fi"
-    post :install, "chmod 755 #{ucorn}"
+  runner "cp #{tmpucorn} #{ucorn}" do
+    pre :install, "if [ -f #{ucorn} ]; then cp #{ucorn} #{bkucorn}; fi" 
   end
+  verify { match_remote_remote "#{tmpucorn}", "#{ucorn}" }  # Custom verify extension
 end
+
+# package :copy_unicorn_startup do
+#   requires :unicorn_startup
+#   runner "if [ \"X\(md5sum #{tmpucorn} | awk \'{print $1}\' \)\" != \"X\(md5sum #{ucorn} | awk \'{print $1}\' \)\" ]; then cp #{tmpucorn} #{ucorn}; fi" do
+#     pre :install, "if [ -f #{ucorn} ]; then cp #{ucorn} #{bkucorn}; fi"
+#     post :install, "chmod 755 #{ucorn}"
+#   end
+# end
 
 package :activate_unicorn_startup do
   requires :copy_unicorn_startup

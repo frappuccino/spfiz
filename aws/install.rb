@@ -9,7 +9,12 @@ SERVERNAME = $servername
 DOMAINNAME = $domainname
 MYTIME     = $myt
 
+# BE SURE customverify is the first required file
+require "#{$thisdir}/custom/customverify"
+# BE SURE customverify is the first required file 
+
 require "#{$thisdir}/pvt/config.rb"
+require "#{$thisdir}/packages/varnish-source"
 require "#{$thisdir}/packages/essential"
 require "#{$thisdir}/packages/rvm-package"
 require "#{$thisdir}/packages/ruby193"
@@ -19,7 +24,6 @@ require "#{$thisdir}/packages/unicorn-monit-files"
 require "#{$thisdir}/packages/mysql-server"
 # require "#{$thisdir}/packages/varnish-package"
 require "#{$thisdir}/packages/varnish-source"
-require "#{$thisdir}/custom/customverify"
 
 deployment do
   # mechanism for deployment
@@ -49,15 +53,14 @@ policy :myapp, :roles => :app do
 #   requires :linkrvm
 #   requires :copy_nxconf
 #   requires :copy_nxvirt
-#   requires :copy_ssl_crt
-#   requires :copy_ssl_key
+  requires :copy_ssl_crt
+  requires :copy_ssl_key
 #   requires :site_enable
 #   requires :activate_unicorn_startup
 #   requires :copy_monit_global
 #   requires :copy_monit_site
 # #  requires :varnish_lts_install
   requires :varnish_302_from_source
-  requires :trash
   requires :test1
 end
 
