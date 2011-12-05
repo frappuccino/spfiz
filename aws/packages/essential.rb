@@ -85,3 +85,13 @@ package :libpcre do
     has_apt 'libpcre3-dev'
   end
 end
+
+package :ntp do
+  apt 'ntp' do
+    pre :install, 'ntpdate pool.ntp.org'  # it's a good idea to set the clock before starting ntp
+  end
+  verify do
+    has_apt 'ntp'
+  end
+end
+

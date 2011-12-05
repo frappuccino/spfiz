@@ -6,7 +6,7 @@ package :varnish_key do
   verify { has_version_in_grep 'apt-key fingerprint', "#{$varish_gpg_fprint}" }
 end
 
-package :varnish_pkg do
+package :varnish_trust_pkg do
   requires :varnish_key
   runner 'echo "deb http://repo.varnish-cache.org/ubuntu/ $(lsb_release -s -c) varnish-3.0" >> /etc/apt/sources.list' do
     post :install, 'apt-get update'
@@ -15,7 +15,7 @@ package :varnish_pkg do
 end
 
 package :varnish_lts_install do
-  requires :varnish_pkg
+  requires :varnish_trust_pkg
   apt 'varnish' do
     pre :install, 'apt-get update'
   end

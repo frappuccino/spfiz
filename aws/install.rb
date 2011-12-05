@@ -23,8 +23,9 @@ require "#{$thisdir}/packages/ssl"
 require "#{$thisdir}/packages/nginx-files"
 require "#{$thisdir}/packages/unicorn-monit-files"
 require "#{$thisdir}/packages/mysql-server"
-# require "#{$thisdir}/packages/varnish-package"
-require "#{$thisdir}/packages/varnish-source"
+require "#{$thisdir}/packages/varnish-package"
+# require "#{$thisdir}/packages/varnish-trusted-package"
+# require "#{$thisdir}/packages/varnish-source"
 
 deployment do
   # mechanism for deployment
@@ -60,7 +61,7 @@ policy :myapp, :roles => :app do
 #   requires :activate_unicorn_startup
 #   requires :copy_monit_global
 #   requires :copy_monit_site
-# #  requires :varnish_lts_install
-  requires :varnish_302_from_source
+  requires :varnish_package
+  requires :ntp
 end
 

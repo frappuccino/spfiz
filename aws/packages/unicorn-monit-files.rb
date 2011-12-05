@@ -81,7 +81,7 @@ package :copy_monit_site do
   end
   verify do
     has_file "#{tmpmonsite}"
-    match_remote_remote "#{tmpmonsite}, #{monsite}"
+    match_remote_remote "#{tmpmonsite}", "#{monsite}"
   end 
 end
   
