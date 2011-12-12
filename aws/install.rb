@@ -23,7 +23,7 @@ require "#{$thisdir}/packages/ssl"
 require "#{$thisdir}/packages/nginx-files"
 require "#{$thisdir}/packages/unicorn-monit-files"
 require "#{$thisdir}/packages/mysql-server"
-require "#{$thisdir}/packages/varnish-package"
+# require "#{$thisdir}/packages/varnish-package"
 # require "#{$thisdir}/packages/varnish-trusted-package"
 # require "#{$thisdir}/packages/varnish-source"
 
@@ -42,26 +42,26 @@ deployment do
 end
 # 
 policy :myapp, :roles => :app do
-#   requires :setname
-#   requires :copy_setname
-#   requires :nginx
-#   requires :ruby193p0
-# #  requires :bundler
-#   requires :subversion
-#   requires :dbstuff
-#   requires :mysqlserver
-#   requires :webutilities
-#   requires :imagemagic
-#   requires :linkrvm
-#   requires :copy_nxconf
-#   requires :copy_nxvirt
+  requires :setname
+  requires :copy_setname
+  requires :nginx
+  requires :ruby193p0
+#  requires :bundler
+  requires :subversion
+  requires :dbstuff
+  requires :mysqlserver
+  requires :webutilities
+  requires :imagemagic
+  requires :linkrvm
+  requires :copy_nxconf
+  requires :copy_nxvirt
   requires :copy_ssl_crt
   requires :copy_ssl_key
-#   requires :site_enable
+  requires :site_enable
 #   requires :activate_unicorn_startup
 #   requires :copy_monit_global
 #   requires :copy_monit_site
-  requires :varnish_package
+#   requires :varnish_package
   requires :ntp
 end
 
