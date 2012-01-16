@@ -1,21 +1,36 @@
+# server {
+#     listen	80;
+#     server_name <%= AKA %>;
+#     rewrite	^(.*)	https://<%= IDENTITY %>$1 permanent;
+# }
 
 server {
-    listen	80;
-    server_name <%= AKA %>;
-    rewrite	^(.*)	https://<%= IDENTITY %>$1 permanent;
-}
+     listen      80;
 
-server {
-#    listen      80;
-    listen      443 ssl;
-    ssl_certificate /etc/nginx/ssl/<%= SITEDOMAIN %>.crt;
-    ssl_certificate_key	/etc/nginx/ssl/<%= SITEDOMAIN %>.key;
+#    listen      443 ssl;
+#    ssl_certificate /etc/nginx/ssl/<%= SITEDOMAIN %>.crt;
+#    ssl_certificate_key	/etc/nginx/ssl/<%= SITEDOMAIN %>.key;
 
-    ssl_session_timeout  5m;
+#    ssl_session_timeout  5m;
 
-    ssl_protocols  SSLv2 SSLv3 TLSv1;
-    ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
-    ssl_prefer_server_ciphers   on;
+#    ssl_protocols  SSLv2 SSLv3 TLSv1;
+#    ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
+#    ssl_prefer_server_ciphers   on;
+
+    set $is_health_check 0;
+
+    if ($request_uri ~* ^/health_check$) {
+        set $is_health_check a;
+    }
+
+    if ($http_x_forwarded_proto != "https") {
+	set $is_heath_check '${is_health_check}b';
+    }
+    
+    if ($is_health_check = ab)
+    {    
+      rewrite ^(.*)$ https://fizbeaux.com$1 permanent;
+    }
 
     server_name <%= AKA %>;
 
@@ -117,7 +132,7 @@ server {
 }
 
 server {
-  server_name assets1.<%= SITEDOMAIN %>;
+  server_name <%= ASSETSNAME %>.<%= SITEDOMAIN %>;
 
   root /var/www/<%= SITEDOMAIN %>/shared;
 
@@ -130,7 +145,7 @@ server {
     deny all;
   }
 
-  location ^~ /assets/ {
+  location ^~ /<%= ASSETSLOCATION %>/ {
     allow all;
     gzip_http_version 1.0;
     gzip_static  on;
