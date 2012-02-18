@@ -5,9 +5,9 @@
 # Feel free to change any of the following variables for your app:
 APP_ROOT=/var/www/<%= SITEDOMAIN %>/current
 PID=/var/www/<%= SITEDOMAIN %>/shared/pids/unicorn.pid
-ur=`which unicorn_rails`
+# ur=`which unicorn_rails`
 ENV=<%= THEENV %>
-CMD="bundle exec $ur --env $ENV -c $APP_ROOT/config/unicorn.rb -D"
+CMD="bundle exec unicorn -E $ENV -c $APP_ROOT/config/unicorn.rb -D"
 
 old_pid="$PID.oldbin"
 
