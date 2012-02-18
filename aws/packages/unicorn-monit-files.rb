@@ -2,6 +2,8 @@ THEENV     = $theenv      # see pvt/config.rb
 SITEDOMAIN = $sitedomain  # see pvt/config.rb
 IDENTITY   = $identity    # see pvt/config.rb
 MONITALERT = $monitalert  # see pvt/config.rb
+ASSETSNAME = $assetsname  # see pvt/config.rb
+ASSETSLOCATION = $assetslocation # see pvt/config.rb
 
 # BUILD /etc/init.d/unicorn.<sitedomain> from template, create the associated rc.d link, backup existing file prior to copy
 tmpucorn = "/tmp/unicorn.#{$sitedomain}.template"
