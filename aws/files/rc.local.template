@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh -e
 #
 # rc.local
 #
@@ -20,14 +20,14 @@ if grep -q "pvt<%= SERVERNAME %>" /etc/hosts; then
   # MATCH FOUND FOR <%= SERVERNAME %>
   sed -i "s/^.*pvt<%= SERVERNAME %>.*$/$aws_local_ipv4 pvt<%= SERVERNAME %>/" /etc/hosts
 else
-  echo "$aws_local_ipv4 pvt<%= SERVERNAME %>"
+  echo "$aws_local_ipv4 pvt<%= SERVERNAME %>" >> /etc/hosts
 fi
 
 if grep -q "<%= SERVERNAME %>.<%= SERVERDOMAIN %>" /etc/hosts; then
   # MATCH FOUND FOR <%= SERVERNAME %>.<%= SERVERDOMAIN %>
   sed -i "s/^.*<%= SERVERNAME %>.<%= SERVERDOMAIN %>.*$/$aws_public_ipv4 <%= SERVERNAME %>.<%= SERVERDOMAIN %> <%= SERVERNAME %>/" /etc/hosts
 else
-  echo "$aws_public_ipv4 <%= SERVERNAME %>.<%= SERVERDOMAIN %> <%= SERVERNAME %>"
+  echo "$aws_public_ipv4 <%= SERVERNAME %>.<%= SERVERDOMAIN %> <%= SERVERNAME %>" >> /etc/hosts
 fi
 
 # Ensure mail goes out with the public name
