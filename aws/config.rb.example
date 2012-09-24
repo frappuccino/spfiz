@@ -18,8 +18,8 @@ $theenv = "staging"
 # MONIT ALERTS
 $monitalert = "user@example.com"
 
-$assetsname = assets
-$assetslocation = assets  # http://<assetsname>.<domainname>/<assetslocation>/
+$assetsname = "assets1"
+$assetslocation = "assets1"  # http://<assetsname>.<domainname>/<assetslocation>/
 
 # SNIP SSL CERT AND KEY files for verification purposes
 # Depricated in use of custom verification method

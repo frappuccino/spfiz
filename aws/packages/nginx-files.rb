@@ -7,6 +7,8 @@ SOCKETNAME   = $socketname   # see pvt/config.rb
 AKA	     = $identity     # nginx's site_name can be completely defined by identity?
 # AKA        = "#{$idenity} www.#{$identity}"  # nginx's site_name needs "www" when you've set sitename="" 
 MYTIME     = $myt
+PREAUTH	     = "#"
+ASSETNAME    = "#{$assetsname}"
 
 # /etc/nginx.conf
 tmpnx    = "/tmp/nginx.conf.template"
@@ -30,18 +32,20 @@ end
 
 package :copy_nxconf do
   requires :nxconf
-  runner 'if [ "X(md5sum /tmp/nginx.conf.template |cut -d\" \" -f 1)" != "X(md5sum /etc/nginx/nginx.conf |cut -d\" \" -f 1)" ]; then cp /tmp/nginx.conf.template /etc/nginx/nginx.conf; fi' do     
+  # runner 'if [ "X(md5sum /tmp/nginx.conf.template |cut -d\" \" -f 1)" != "X(md5sum /etc/nginx/nginx.conf |cut -d\" \" -f 1)" ]; then cp /tmp/nginx.conf.template /etc/nginx/nginx.conf; fi' do     
+  runner "cp /tmp/nginx.conf.template /etc/nginx/nginx.conf" do
     pre :install, "if [ -f #{filenx} ]; then cp #{filenx} #{bknx}; fi"
   end
-
+  verify { match_remote_remote "/tmp/nginx.conf.template", "/etc/nginx/nginx.conf" } # Custom verify extension
 end
 
 package :copy_nxvirt do
   requires :nxvirt 
-  runner "if [ \"X\(md5sum #{tmpvirt} | awk \'{print $1}\' \)\" != \"X\(md5sum #{filevirt} | awk \'{print $1}\' \)\" ]; then cp #{tmpvirt} #{filevirt}; fi" do
+  # runner "if [ \"X\(md5sum #{tmpvirt} | awk \'{print $1}\' \)\" != \"X\(md5sum #{filevirt} | awk \'{print $1}\' \)\" ]; then cp #{tmpvirt} #{filevirt}; fi" do
+  runner "cp #{tmpvirt} #{filevirt}" do
     pre :install, "if [ -f #{filevirt} ]; then cp #{filevirt} #{bkvirt}; fi"
   end
-
+  verify { match_remote_remote "#{tmpvirt}", "#{filevirt}" } # Custom verify extension
 end
 
 package :site_enable do
