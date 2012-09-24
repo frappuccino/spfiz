@@ -45,8 +45,8 @@ policy :myapp, :roles => :app do
   requires :setname
   requires :copy_setname
   requires :nginx
-  requires :ruby193p0
-#  requires :bundler
+  requires :ruby193p194
+#  requires :bundler  # included with website deployment
   requires :subversion
   requires :dbstuff
   requires :mysqlserver

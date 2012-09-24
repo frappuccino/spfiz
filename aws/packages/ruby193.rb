@@ -5,7 +5,7 @@ package :rvm_update do
 end
 
 package :ruby193p0 do
-  description "Ruby 1.9.3"
+  description "Ruby 1.9.3p0"
   requires :rvm
   requires :rvm_update
   requires :libssldev
@@ -18,6 +18,23 @@ package :ruby193p0 do
 
   verify do
     has_version_in_grep "rvm info", "1.9.3p0"
+  end  
+end
+
+package :ruby193p194 do
+  description "Ruby 1.9.3p194"
+  requires :rvm
+  requires :rvm_update
+  requires :libssldev
+  noop do
+    # Install Ruby 1.9.3 P194
+    pre :install, 'rvm install 1.9.3-p194'
+    # Set ruby as current/default Ruby version.
+    post :install, 'rvm use 1.9.3-p194 --default'
+  end
+
+  verify do
+    has_version_in_grep "rvm info", "1.9.3p194"
   end  
 end
 
