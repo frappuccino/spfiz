@@ -9,8 +9,12 @@ TO USE:
    (remote) Login to new instance:    # ssh -i <keypair> ubuntu@<elastic-ip or hostname> 
    (remote) Set timezone              # dpkg-reconfigure tzdata
    (remote) root logins?	      # sudo passwd root
-   (remote) PasswordAuthentication?   # sudo vi /etc/ssh/sshd_config 
+   (remote) PasswordAuthentication?   # sudo vi /etc/ssh/sshd_config    # Modify: "PasswordAuthentication yes"
    (remote) Restart ssh               # sudo service ssh restart
+   (remote) # apt-get update	      # Good idea prior to sprinkle
+   (remote) # apt-get upgrade         # Good idea prior to sprinkle
+   (remote) # ls /var/run | grep reboot # see if a "reboot-required" file exists
+   (remote) # reboot                    # reboot if a "reboot-required" file is found
    (local) Copy config.rb.example to pvt/config.rb and adjust as necessary
    (local) # sprinkle -t -v -c -s install.rb
    (local) # sprinkle    -v -c -s install.rb 
